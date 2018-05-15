@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="js/angular.min.js"></script>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        body{
+            background-color:#F7DA55;;
+            /*background-image:url('img/bg.gif')*/
+        }
+        #login-wrapper{
+            width:30%;
+            height:500px;
+            margin:10% auto;
+        }
+        #login-body{
+            width:100%;
+            height:350px;
+            margin:0 auto;
+        }
+        #login-header{
+            background-color:#eee;
+            width:100%;
+            height:20%;
+        }
+        #name-body{
+            background-color:#eee;
+            width:100%;
+            height:23%;
+            
+        }
+        #password-body{
+            background-color:#eee;
+            width:100%;
+            height:23%;
+            
+        }
+        #button-body{
+            background-color:#eee;
+            width:100%;
+            height:25%;
+
+        }
+        
+        #login-body input,#password-body input{
+            display:block;
+            padding:3%;
+            width:80%;
+            border:1px solid #E5E5E5;
+            margin-left:6%;
+            font-size:16px;
+            border-radius:8px;
+        }
+         #button-body input{
+            background:#21A957;
+            padding:3%;
+            display:block;
+            width:87%;
+        }
+        #login-body span,#password-body span{
+            padding:9px;
+            margin:5px 30px 0px 30px;
+        }
+       h3{
+           text-align:center;
+           line-height:56px;
+       }
+       .error{
+           color:red;
+       }
+    </style>
+</head>
+<body ng-app="login" ng-controller="loginControl">
+    <div id="login-wrapper">
+        <div id="login-body">
+            <div id="login-header">
+                <h3>智能盒子运营平台</h3>
+            </div>
+            <div id="name-body">
+                <input type="text" value="用户名" onclick="if (this.value == '用户名' ){this.value = '';}" onblur="if (this.value == '') {this.value = '用户名';}" ng-model="userName"/>
+            </div>
+            <div id="password-body">
+                <input type="text" value="密码" onclick="this.type='password';if (this.value == '密码' ){this.value = '';}" onblur="if (this.value == '') {this.value = '密码';this.type='text'}" ng-model="password" ng-class="{true:'error',false:''}[loginStatus==0]" />
+            </div>
+            <div id="button-body">
+                <input type="button" value="登录" ng-click="login()"/>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module("login", []);
+        app.controller("loginControl", function ($http,$scope) {
+            $scope.userName = "kingdee_zh_tu";
+            $scope.password = "12323X@kingdee.com";
+            $scope.loginStatus = 1;
+            $scope.login=function()
+            {
+                $http({
+                    method: "post",
+                    url: 'Handler.ashx',
+                    params: {
+                        "opt": "login",
+                        "name": $scope.userName,
+                        "password":$scope.password,
+                    }
+                }).then(function(data){
+                    if (data.data == "1"){
+                        window.location.href = "index.html";
+                        $scope.loginStatus = 1;
+                    }
+                    else {
+                        $scope.loginStatus = 0;
+                    }
+                });
+               
+            }
+        })
+         
+    </script>
+</body>
+</html>
